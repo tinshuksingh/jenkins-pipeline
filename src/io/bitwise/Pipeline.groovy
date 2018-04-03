@@ -92,10 +92,11 @@ def gitEnvVars() {
 
 def containerBuildPub(Map args) {
 
+  
     println "Running Docker build/publish: ${args.host}/${args.acct}/${args.repo}:${args.tags}"
     docker.withServer('tcp://10.124.10.11:2375'){
     docker.withRegistry("https://${args.host}", "${args.auth_id}") {
-
+         bat 'powershell.exe ls'
         // def img = docker.build("${args.acct}/${args.repo}", args.dockerfile)
         def img = docker.image("${args.acct}/${args.repo}")
         sh "docker  build  --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.acct}/${args.repo} ${args.dockerfile}"
