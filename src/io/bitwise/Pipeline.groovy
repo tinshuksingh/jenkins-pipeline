@@ -109,11 +109,11 @@ def containerBuildPub(Map args) {
     
 }
 
-def containerBuildPubWithRemoteServer(config,Map args) {
+def containerBuildPubWithRemoteServer(String docker_remote,Map args) {
 
     println "Running Docker build/publish: ${args.host}/${args.acct}/${args.repo}:${args.tags}"
     
-    docker.withServer(config.container_repo.docker_remote)
+    docker.withServer(docker_remote)
     {
             docker.withRegistry("https://${args.host}", "${args.auth_id}") {
         
