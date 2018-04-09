@@ -111,12 +111,15 @@ def containerBuildPub(Map args) {
 
 def containerBuildPubWithRemoteServer(Map args) {
 
-    println "Running Docker build/publish: ${args.host}/${args.acct}/${args.repo}:${args.tags}"
+    println "Running Docker build/publish"
     
     docker.withServer(args.docker_remote)
     {
-            docker.withRegistry("https://${args.host}", "${args.auth_id}") {
-        
+           docker.withRegistry("https://${args.host}", "${args.auth_id}") {
+               
+               list.each { args.images ->
+                   sh "echo Hello ${item}"
+                }
                 def img = docker.image("${args.acct}/${args.repo}")
                 
                 sh "docker  build  --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.acct}/${args.repo} ${args.dockerfile}"
