@@ -117,7 +117,7 @@ def containerBuildPubWithRemoteServer(Map args) {
     {
            docker.withRegistry("https://${args.host}", "${args.auth_id}") {
                
-               list.each { args.images ->
+               args.images.each { item ->
                    sh "echo Hello ${item}"
                 }
                 def img = docker.image("${args.acct}/${args.repo}")
