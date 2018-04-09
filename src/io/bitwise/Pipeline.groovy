@@ -117,18 +117,18 @@ def containerBuildPubWithRemoteServer(Map args) {
     {
            docker.withRegistry("https://${args.host}", "${args.auth_id}") {
                
-               args.images.each { item ->
-                   sh "echo Hello ${item}"
-                }
-                def img = docker.image("${args.acct}/${args.repo}")
+                args.images.each {item ->
+                //${item}                
+                def img = docker.image("${item.imagename}")
                 
-                sh "docker  build  --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.acct}/${args.repo} ${args.dockerfile}"
+                sh "docker  build  --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${item.imagename} ${item.dockerfile}"
     
                 for (int i = 0; i < args.tags.size(); i++) {
                     img.push(args.tags.get(i))
                 }
 
                 return img.id
+                }
             }
     }
 }
